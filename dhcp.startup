@@ -1,0 +1,23 @@
+ifconfig eth0 192.168.20.2/24
+
+route add default gw 192.168.20.1
+
+#Create the DHCP server configuration file in
+touch etc/dhcp3/dhcpd.conf
+
+#Add the following lines
+echo	"default-lease-time 3600;
+	option domain-name-servers 8.8.8.8;
+	#option domain-name "lab-dhcp.org";
+	#option domain-search "lab-dhcp.org";
+	
+	subnet 192.168.20.0 netmask 255.255.255.0 {
+		range 192.168.20.100 192.168.20.254;
+		option routers 192.168.20.1;
+	}" >> etc/dhcp3/dhcpd.conf
+	
+#DHCP
+/etc/init.d/dhcp3-server start
+
+
+
